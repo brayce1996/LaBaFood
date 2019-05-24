@@ -66,26 +66,33 @@
             bar.h = 60;
             bar.x = 80;
             bar.y = 148;
+            bar.spin_factor = 5;
             bar.distance = 2 + bar.bk_h;  // the distance between blocks
             bar.blocks = [jp_flag_img, tw_flag_img, us_flag_img, it_flag_img, jp_flag_img, tw_flag_img, jp_flag_img]
 
             laba_counter = 0;   // for handle-toggling animation of the laba
             rolling_counter = 0;
-            rolling_tick = 4;
+            rolling_tick = 8;
             function draw() {
                 // drawing code
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 if (bar_roll_rand>=0 && tick% (rolling_tick/tick_period)==0){
 
-                    rolling_counter++;
+                    rolling_counter += bar.spin_factor;
                     bar_roll_rand--;
-                    if (bar_roll_rand == -1){
-                        rolling_tick = 4; //reset to 4 for next rolling
-                    }else if (bar_roll_rand < 40){
-                        rolling_tick = 12;
-                    }else if (bar_roll_rand < 100){
+                    if (bar_roll_rand == -1){   // reset for next spin
+                        bar.spin_factor = 5;
                         rolling_tick = 8;
+                    }else if (bar_roll_rand < 50){
+                        bar.spin_factor = 1;
+                    }else if (bar_roll_rand < 80){
+                        bar.spin_factor = 2;
+                        rolling_tick = 12;
+                    }else if (bar_roll_rand < 130){
+                        bar.spin_factor = 3;
+                    }else if (bar_roll_rand < 200){
+                        bar.spin_factor = 4;
                     }
                 }
 
