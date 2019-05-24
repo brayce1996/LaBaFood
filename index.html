@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Gamedev Canvas Workshop</title>
+        <style>
+            * { padding: 0; margin: 0; }
+            canvas { background: #eee; display: block; margin: 0 auto; }
+        </style>
+    </head>
+    <body>
+        <div>
+            <img id="laba_img_1" width="210" height="240" src="laba1.png" style="display: none;" >
+            <img id="laba_img_2" width="210" height="240" src="laba2.png" style="display: none;" >
+            <img id="laba_img_3" width="210" height="240" src="laba3.png" style="display: none;" >
+        </div>
+        <canvas id="myCanvas" width="480" height="320"></canvas>
+
+        <script>
+            var canvas = document.getElementById("myCanvas");
+            var ctx = canvas.getContext("2d");
+            var laba_img_1 = document.getElementById("laba_img_1");
+            var laba_img_2 = document.getElementById("laba_img_2");
+            var laba_img_3 = document.getElementById("laba_img_3");
+            
+
+
+            var cycle = 0;
+            var laba_img = [laba_img_1, laba_img_2, laba_img_3]
+            var img_order = [0,1,2,1]
+            var is_push_btn = false;
+
+            // x.   y.                  x
+            // 210 125                 245
+            //. 
+
+
+            //     200                     245 200
+            window.onload = function() {
+                ctx.drawImage(laba_img_1, 10, 10)
+            }
+
+            canvas.addEventListener('click', function(event) {
+                var x = event.pageX - canvas.offsetLeft,
+                    y = event.pageY - canvas.offsetTop;
+
+                if (x>=210 && x<=245 && y >=125 && y<=200){
+                    is_push_btn = true;
+                }
+
+                    //alert('X: '.concat(x.toString()).concat(' Y: ').concat(y.toString()));
+            }, false);
+
+
+
+            function draw() {
+                // drawing code
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if(!is_push_btn){
+                    ctx.drawImage(laba_img_1, 10, 10)
+                }else{
+                    ctx.drawImage(laba_img[img_order[cycle]], 10, 10)
+                    cycle ++;
+                    if (cycle >= 4){
+                        cycle = 0;
+                        is_push_btn = false;
+                    }
+                }
+            }
+            setInterval(draw, 80);
+        </script>
+
+    </body>
+</html>
