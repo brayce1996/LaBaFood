@@ -2,17 +2,22 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Gamedev Canvas Workshop</title>
+        <title>La Ba Food</title>
         <style>
             * { padding: 0; margin: 0; }
             canvas { background: #eee; display: block; margin: 0 auto; }
         </style>
     </head>
     <body>
-        <div>
-            <img id="laba_img_1" width="210" height="240" src="laba1.png" style="display: none;" >
-            <img id="laba_img_2" width="210" height="240" src="laba2.png" style="display: none;" >
-            <img id="laba_img_3" width="210" height="240" src="laba3.png" style="display: none;" >
+        <div style="display: none;">
+            <img id="laba_img_1" width="210" height="240" src="laba1.png" >
+            <img id="laba_img_2" width="210" height="240" src="laba2.png" >
+            <img id="laba_img_3" width="210" height="240" src="laba3.png" >
+            <img id="jp_flag_img" width="33" height="20" src="jp_flag.png" >
+            <img id="tw_flag_img" width="33" height="20" src="tw_flag.png" >
+            <img id="us_flag_img" width="33" height="20" src="us_flag.png" >
+            <img id="it_flag_img" width="33" height="20" src="it_flag.png" >
+
         </div>
         <canvas id="myCanvas" width="480" height="320"></canvas>
 
@@ -22,20 +27,21 @@
             var laba_img_1 = document.getElementById("laba_img_1");
             var laba_img_2 = document.getElementById("laba_img_2");
             var laba_img_3 = document.getElementById("laba_img_3");
+
+            var jp_flag_img = document.getElementById("jp_flag_img");
+            var tw_flag_img = document.getElementById("tw_flag_img");
+            var us_flag_img = document.getElementById("us_flag_img");
+            var it_flag_img = document.getElementById("it_flag_img");
             
 
 
-            var cycle = 0;
+            var tick = 0;
             var laba_img = [laba_img_1, laba_img_2, laba_img_3]
             var img_order = [0,1,2,1]
             var is_push_btn = false;
 
-            // x.   y.                  x
-            // 210 125                 245
-            //. 
+            var bar_roll_rand = 0
 
-
-            //     200                     245 200
             window.onload = function() {
                 ctx.drawImage(laba_img_1, 10, 10)
             }
@@ -46,28 +52,65 @@
 
                 if (x>=210 && x<=245 && y >=125 && y<=200){
                     is_push_btn = true;
+                    bar_roll_rand = getRandom(1000) + 100;
                 }
 
-                    //alert('X: '.concat(x.toString()).concat(' Y: ').concat(y.toString()));
+                //alert('X: '.concat(x.toString()).concat(' Y: ').concat(y.toString()));
             }, false);
 
 
+            var bar = new Object()
+            bar.bk_w = 29;
+            bar.bk_h = 18;
+            bar.w = 33;
+            bar.h = 60;
+            bar.x = 80;
+            bar.y = 148;
+            bar.distance = 2 + bar.bk_h;  // the distance between blocks
+            bar.blocks = [jp_flag_img, tw_flag_img, us_flag_img, it_flag_img, jp_flag_img, tw_flag_img, jp_flag_img]
 
+            laba_counter = 0;   // for handle-toggling animation of the laba
+            rolling_counter = 0;
             function draw() {
                 // drawing code
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                if (bar_roll_rand>=0 && tick% (5/5)==0){
+
+                    rolling_counter++;
+                    bar_roll_rand--;
+                }
+
+                for(i=0; i < bar.blocks.length; i++){
+                    y = (bar.y + bar.distance*(i-2) + rolling_counter - (bar.y - bar.distance*2))% (bar.y + bar.h + bar.distance - (bar.y - bar.distance*2)) + (bar.y - bar.distance*2);
+
+                    if (y < bar.y+bar.h && y+bar.bk_h > bar.y){
+                        ctx.drawImage(bar.blocks[i], bar.x, y, bar.bk_w, bar.bk_h);
+                    }
+                }
+
+                
                 if(!is_push_btn){
-                    ctx.drawImage(laba_img_1, 10, 10)
+                    ctx.drawImage(laba_img_1, 10, 10);
                 }else{
-                    ctx.drawImage(laba_img[img_order[cycle]], 10, 10)
-                    cycle ++;
-                    if (cycle >= 4){
-                        cycle = 0;
+                    ctx.drawImage(laba_img[img_order[laba_counter]], 10, 10);
+                    
+                    if(tick% (80/5) == 0){   // update per 80 ticks
+                        laba_counter ++;
+                    }
+                    if (laba_counter >= 4){
+                        laba_counter = 0;
                         is_push_btn = false;
                     }
                 }
+                
+                tick = (tick+1) % 100000;
             }
-            setInterval(draw, 80);
+            setInterval(draw, 5);
+            
+            function getRandom(x){
+                return Math.floor(Math.random()*x);
+            };
         </script>
 
     </body>
