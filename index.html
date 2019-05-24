@@ -34,7 +34,7 @@
             var it_flag_img = document.getElementById("it_flag_img");
             
 
-
+            var tick_period = 4;
             var tick = 0;
             var laba_img = [laba_img_1, laba_img_2, laba_img_3]
             var img_order = [0,1,2,1]
@@ -52,7 +52,7 @@
 
                 if (x>=210 && x<=245 && y >=125 && y<=200){
                     is_push_btn = true;
-                    bar_roll_rand = getRandom(1000) + 100;
+                    bar_roll_rand = getRandom(300) + 300;
                 }
 
                 //alert('X: '.concat(x.toString()).concat(' Y: ').concat(y.toString()));
@@ -71,14 +71,22 @@
 
             laba_counter = 0;   // for handle-toggling animation of the laba
             rolling_counter = 0;
+            rolling_tick = 4;
             function draw() {
                 // drawing code
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                if (bar_roll_rand>=0 && tick% (5/5)==0){
+                if (bar_roll_rand>=0 && tick% (rolling_tick/tick_period)==0){
 
                     rolling_counter++;
                     bar_roll_rand--;
+                    if (bar_roll_rand == -1){
+                        rolling_tick = 4; //reset to 4 for next rolling
+                    }else if (bar_roll_rand < 40){
+                        rolling_tick = 12;
+                    }else if (bar_roll_rand < 100){
+                        rolling_tick = 8;
+                    }
                 }
 
                 for(i=0; i < bar.blocks.length; i++){
@@ -95,7 +103,7 @@
                 }else{
                     ctx.drawImage(laba_img[img_order[laba_counter]], 10, 10);
                     
-                    if(tick% (80/5) == 0){   // update per 80 ticks
+                    if(tick% (80/tick_period) == 0){   // update per 80 ticks
                         laba_counter ++;
                     }
                     if (laba_counter >= 4){
@@ -106,7 +114,7 @@
                 
                 tick = (tick+1) % 100000;
             }
-            setInterval(draw, 5);
+            setInterval(draw, tick_period);
             
             function getRandom(x){
                 return Math.floor(Math.random()*x);
