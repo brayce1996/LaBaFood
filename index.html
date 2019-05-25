@@ -151,11 +151,10 @@
                 //draw blocks
                 for(i=0; i < bar.length ; i++){
                     for(j=0; j < bar[i].blocks.length; j++){
-                        y = (bar[i].y + bar[i].distance*(j-2) + bar[i].shift - (bar[i].y - bar[i].distance*2))% (bar[i].y + bar[i].h + bar[i].distance - (bar[i].y - bar[i].distance*2)) + (bar[i].y - bar[i].distance*2);
+                        y = (bar[i].y + bar[i].distance*(j-2) + bar[i].shift - (bar[i].y - bar[i].distance*2))% (bar[i].y + bar[i].distance*5 - (bar[i].y - bar[i].distance*2)) + (bar[i].y - bar[i].distance*2);
 
-                        if (y < bar[i].y+bar[i].h && y+bar[i].bk_h > bar[i].y){
-                            ctx.drawImage(bar[i].blocks[j], bar[i].x, y, bar[i].bk_w, bar[i].bk_h);
-                        }
+                        ctx.drawImage(bar[i].blocks[j], bar[i].x, y, bar[i].bk_w, bar[i].bk_h);
+
                     }
                 }
                 
