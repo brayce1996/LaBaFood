@@ -83,7 +83,7 @@
                 if (x>=210 && x<=245 && y >=125 && y<=200){
                     is_push_btn = true;
                     for (i=0;i<bar.length;i++){
-                        bar[i].rand = getRandom(300) + 300;
+                        bar[i].rand = getRandom(700) + 300;
                     }
                 }
 
@@ -111,7 +111,7 @@
                     bar_rand: 0,
                     spin_speed: 0,
                     shift: 0,
-                    blocks: [bread_img, fried_img, noodles_img, rice_img, soup_img, bread_img, noodles_img],
+                    blocks: [bread_img, fried_img, noodles_img, rice_img, bread_img, soup_img, noodles_img],
                     x: 117,
                     y: 148,
                     w: 33,
@@ -190,15 +190,21 @@
                             bar[i].rolling_tick = 8;
                         }else if(bar[i].rand == 0 && bar[i].shift%bar[i].distance != 0){    // make the reel stop at center
                             bar[i].rand += bar[i].distance - bar[i].shift%bar[i].distance;
+
+                            bar[i].spin_speed = 1;
+                            bar[i].rolling_tick = 32;
                         }else if (bar[i].rand < 50){
                             bar[i].spin_speed = 1;
+                            bar[i].rolling_tick = 32;
                         }else if (bar[i].rand < 80){
                             bar[i].spin_speed = 2;
                             bar[i].rolling_tick = 12;
                         }else if (bar[i].rand < 130){
                             bar[i].spin_speed = 3;
+                            bar[i].rolling_tick = 12;
                         }else if (bar[i].rand < 200){
                             bar[i].spin_speed = 4;
+                            bar[i].rolling_tick = 8;
                         }else if (bar[i].rand >= 200){
                             bar[i].spin_speed = 5;
                             bar[i].rolling_tick = 8;
